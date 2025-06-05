@@ -8,6 +8,7 @@ import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { ProfileAuthUserService } from '../services/profileAuthUser.service';
 import { CreateUrlShortenerDto } from 'src/modules/urls/dto/create-url-shortener.dto';
 import { UrlShortenerAuthUserService } from '../services/urlShortenerAuth.service';
+import { RedirectUrlAuthService } from '../services/redirectUrlAuth.service';
 
 @Controller('auth')
 export class AuthController {
@@ -16,6 +17,7 @@ export class AuthController {
     private readonly createUserService: CreateUserService,
     private readonly profileAuthUserService: ProfileAuthUserService,
     private readonly urlShortenerAuthUserService: UrlShortenerAuthUserService,
+    private readonly redirectUrlAuthService: RedirectUrlAuthService,
   ) {}
 
   @Post('register')
@@ -41,5 +43,10 @@ export class AuthController {
     @UserRequest('id') id: number | null,
   ) {
     return this.urlShortenerAuthUserService.execute(createUrlShortenerDto, id);
+  }
+
+  @Post('redirect')
+  redirect(@Body('urlShortener') urlShortener: string) {
+    return this.redirectUrlAuthService.execute(urlShortener);
   }
 }
