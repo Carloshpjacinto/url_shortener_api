@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get, Delete } from '@nestjs/common';
 import { LoginAuthUserService } from '../services/loginAuthUser.service';
 import { LoginAuthUserDto } from '../dto/login-auth-user.dto';
 import { CreateUserService } from 'src/modules/users/services/createUser.service';
@@ -7,8 +7,9 @@ import { UserRequest } from 'src/shared/decorators/user.decorator';
 import { AuthGuard } from 'src/shared/guards/auth.guard';
 import { ProfileAuthUserService } from '../services/profileAuthUser.service';
 import { CreateUrlShortenerDto } from 'src/modules/urls/dto/create-url-shortener.dto';
-import { UrlShortenerAuthUserService } from '../services/urlShortenerAuth.service';
+import { CreateUrlShortenerService } from 'src/modules/urls/services/createUrlShortener.service';
 import { RedirectUrlAuthService } from '../services/redirectUrlAuth.service';
+import { DeleteUrlShortenerService } from 'src/modules/urls/services/deleteUrlShortener.service';
 
 @Controller('auth')
 export class AuthController {
@@ -16,8 +17,9 @@ export class AuthController {
     private readonly loginAuthUserService: LoginAuthUserService,
     private readonly createUserService: CreateUserService,
     private readonly profileAuthUserService: ProfileAuthUserService,
-    private readonly urlShortenerAuthUserService: UrlShortenerAuthUserService,
+    private readonly createUrlShortenerService: CreateUrlShortenerService,
     private readonly redirectUrlAuthService: RedirectUrlAuthService,
+    private readonly deleteUrlShortenerService: DeleteUrlShortenerService,
   ) {}
 
   @Post('register')
@@ -33,6 +35,11 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Get('profile')
   profile(@UserRequest('email') email: string) {
+    if (!email) {
+      throw new Error(
+        'Você precisa estar autenticado para acessar seu perfil.',
+      );
+    }
     return this.profileAuthUserService.execute(email);
   }
 
@@ -42,11 +49,23 @@ export class AuthController {
     @Body() createUrlShortenerDto: CreateUrlShortenerDto,
     @UserRequest('id') id: number | null,
   ) {
-    return this.urlShortenerAuthUserService.execute(createUrlShortenerDto, id);
+    return this.createUrlShortenerService.execute(createUrlShortenerDto, id);
   }
 
   @Post('redirect')
   redirect(@Body('urlShortener') urlShortener: string) {
     return this.redirectUrlAuthService.execute(urlShortener);
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete('url')
+  deleteUrl(
+    @Body('urlShortener') urlShortener: string,
+    @UserRequest('id') id: number | null,
+  ) {
+    if (!id) {
+      throw new Error('Você precisa estar autenticado para excluir essa url.');
+    }
+    return this.deleteUrlShortenerService.execute(urlShortener, id);
   }
 }
