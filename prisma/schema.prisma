@@ -16,6 +16,20 @@ model User {
   name      String
   email     String   @unique
   password  String
+  urls      Url[]
 
   @@map("users")
+}
+
+model Url {
+
+  id                Int       @id @default(autoincrement())
+  url_original      String
+  url_shortened     String    @unique
+  user              User      @relation(fields: [userId], references: [id])
+  userId            Int
+  clickCounter      Int
+  active            Boolean  @default(true)
+
+  @@map("urls")
 }
