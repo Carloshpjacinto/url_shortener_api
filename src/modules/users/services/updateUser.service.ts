@@ -8,7 +8,7 @@ import { userSelectFields } from 'src/modules/utils/userSelectFields';
 export class UpdateUserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async update(id: number, body: UpdateUserDto) {
+  async execute(id: number, body: UpdateUserDto) {
     await this.isIdExists(id);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
