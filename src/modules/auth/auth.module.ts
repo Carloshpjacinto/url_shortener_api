@@ -9,6 +9,7 @@ import { ProfileAuthUserService } from './services/profileAuthUser.service';
 import { ValidateJwtToken } from './tools/validateToken.tool';
 import { UrlsModule } from '../urls/urls.module';
 import { UrlShortenerAuthUserService } from './services/urlShortenerAuth.service';
+import { RedirectUrlAuthService } from './services/redirectUrlAuth.service';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { UrlShortenerAuthUserService } from './services/urlShortenerAuth.service
     ValidateJwtToken,
     ProfileAuthUserService,
     UrlShortenerAuthUserService,
+    RedirectUrlAuthService,
   ],
   exports: [ValidateJwtToken],
 })

@@ -1,6 +1,6 @@
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { hashPassword } from 'src/shared/tools/hashPassword.tool';
+import { hashPassword } from 'src/modules/auth/tools/hashPassword.tool';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { userSelectFields } from 'src/modules/utils/userSelectFields';
 
