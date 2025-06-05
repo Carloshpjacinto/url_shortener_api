@@ -3,12 +3,10 @@ import { LoginAuthUserService } from './services/loginAuthUser.service';
 import { AuthController } from './controller/auth.controller';
 import { PrismaModule } from '../prisma/prisma.module';
 import { UsersModule } from '../users/users.module';
-import { RegisterAuthUserService } from './services/registerAuthUser.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ProfileAuthUserService } from './services/profileAuthUser.service';
 import { ValidateJwtToken } from './tools/validateToken.tool';
 import { UrlsModule } from '../urls/urls.module';
-import { UrlShortenerAuthUserService } from './services/urlShortenerAuth.service';
 import { RedirectUrlAuthService } from './services/redirectUrlAuth.service';
 
 @Module({
@@ -23,10 +21,8 @@ import { RedirectUrlAuthService } from './services/redirectUrlAuth.service';
   controllers: [AuthController],
   providers: [
     LoginAuthUserService,
-    RegisterAuthUserService,
     ValidateJwtToken,
     ProfileAuthUserService,
-    UrlShortenerAuthUserService,
     RedirectUrlAuthService,
   ],
   exports: [ValidateJwtToken],
