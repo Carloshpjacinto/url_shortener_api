@@ -3,7 +3,7 @@ CREATE TABLE "urls" (
     "id" SERIAL NOT NULL,
     "url_original" TEXT NOT NULL,
     "url_shortened" TEXT NOT NULL,
-    "userId" INTEGER NOT NULL,
+    "userId" INTEGER,
     "clickCounter" INTEGER NOT NULL,
     "active" BOOLEAN NOT NULL DEFAULT true,
 

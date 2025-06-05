@@ -7,11 +7,14 @@ import { RegisterAuthUserService } from './services/registerAuthUser.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ProfileAuthUserService } from './services/profileAuthUser.service';
 import { ValidateJwtToken } from './tools/validateToken.tool';
+import { UrlsModule } from '../urls/urls.module';
+import { UrlShortenerAuthUserService } from './services/urlShortenerAuth.service';
 
 @Module({
   imports: [
     PrismaModule,
     forwardRef(() => UsersModule),
+    forwardRef(() => UrlsModule),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
     }),
@@ -22,6 +25,7 @@ import { ValidateJwtToken } from './tools/validateToken.tool';
     RegisterAuthUserService,
     ValidateJwtToken,
     ProfileAuthUserService,
+    UrlShortenerAuthUserService,
   ],
   exports: [ValidateJwtToken],
 })
