@@ -1,0 +1,26 @@
+import { PrismaService } from 'src/modules/prisma/prisma.service';
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class FindAllUrlShortenerService {
+  constructor(private readonly prisma: PrismaService) {}
+
+  async execute(userId: number, page: number = 1, limit: number = 10) {
+    const offSet = (page - 1) * limit;
+
+    const total = await this.prisma.url.count({ where: { userId: userId } });
+
+    const data = await this.prisma.url.findMany({
+      where: { userId: userId },
+      take: limit,
+      skip: offSet,
+    });
+
+    return {
+      total,
+      page,
+      per_page: limit,
+      data,
+    };
+  }
+}
