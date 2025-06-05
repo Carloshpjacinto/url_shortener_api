@@ -1,0 +1,23 @@
+version: '3.3'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: 'docker'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_DB: 'url_shortener'
+    container_name: postres_container
+    ports:
+      - '5433:5432'
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=pgadmin4
+    container_name: pgadmin4_container
+    ports:
+      - '3200:80'
+    depends_on:
+      - postgres
