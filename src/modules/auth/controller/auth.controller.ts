@@ -1,4 +1,12 @@
-import { Controller, Post, Body, UseGuards, Get, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Get,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { LoginAuthUserService } from '../services/loginAuthUser.service';
 import { LoginAuthUserDto } from '../dto/login-auth-user.dto';
 import { CreateUserService } from 'src/modules/users/services/createUser.service';
@@ -10,6 +18,7 @@ import { CreateUrlShortenerDto } from 'src/modules/urls/dto/create-url-shortener
 import { CreateUrlShortenerService } from 'src/modules/urls/services/createUrlShortener.service';
 import { RedirectUrlAuthService } from '../services/redirectUrlAuth.service';
 import { DeleteUrlShortenerService } from 'src/modules/urls/services/deleteUrlShortener.service';
+import { FindAllUrlShortenerService } from 'src/modules/urls/services/findAllUrlShortener.service';
 
 @Controller('auth')
 export class AuthController {
@@ -20,6 +29,7 @@ export class AuthController {
     private readonly createUrlShortenerService: CreateUrlShortenerService,
     private readonly redirectUrlAuthService: RedirectUrlAuthService,
     private readonly deleteUrlShortenerService: DeleteUrlShortenerService,
+    private readonly findAllUrlShortenerService: FindAllUrlShortenerService,
   ) {}
 
   @Post('register')
@@ -67,5 +77,22 @@ export class AuthController {
       throw new Error('Você precisa estar autenticado para excluir essa url.');
     }
     return this.deleteUrlShortenerService.execute(urlShortener, id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('url')
+  findAllUrl(
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '10',
+    @UserRequest('id') id: number | null,
+  ) {
+    if (!id) {
+      throw new Error('Você precisa estar autenticado para ver as URLS');
+    }
+    return this.findAllUrlShortenerService.execute(
+      id,
+      Number(page),
+      Number(limit),
+    );
   }
 }
