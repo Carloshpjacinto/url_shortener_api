@@ -61,7 +61,7 @@ describe('DeleteUrlShortenerService', () => {
     const urlShort = 'short123';
 
     const user = { id: userId };
-    const url = { userId: 999 }; // outro usuário
+    const url = { userId: 999 };
 
     (findUserByIdService.execute as jest.Mock).mockResolvedValue(user);
     (findUrlByUrlShortService.execute as jest.Mock).mockResolvedValue(url);

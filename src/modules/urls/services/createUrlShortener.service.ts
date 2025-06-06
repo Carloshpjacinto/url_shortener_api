@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { CreateUrlShortenerDto } from '../dto/create-url-shortener.dto';
 import { UrlShortenerService } from './urlShortener.service';
 import { Url } from '@prisma/client';
@@ -13,29 +18,44 @@ export class CreateUrlShortenerService {
     private readonly urlShortenerService: UrlShortenerService,
   ) {}
 
-  execute(
+  async execute(
     createUrlShortenerDto: CreateUrlShortenerDto,
     userId: number | null,
   ): Promise<Url> {
-    const { url } = createUrlShortenerDto;
+    try {
+      const { url } = createUrlShortenerDto;
 
-    const code = this.urlShortenerService.generateCodeFromHash(
-      url,
-      6,
-      userId ?? null,
-    );
+      const code = this.urlShortenerService.generateCodeFromHash(
+        url,
+        6,
+        userId ?? null,
+      );
 
-    const data: any = {
-      url_original: url,
-      url_shortened: `http://localhost:${3000}/shortened/${code}`,
-      clickCounter: 0,
-      active: true,
-    };
+      const data: any = {
+        url_original: url,
+        url_shortened: `http://localhost:3000/shortened/${code}`,
+        clickCounter: 0,
+        active: true,
+      };
 
-    if (userId !== undefined) {
-      data.user = { connect: { id: userId } };
+      if (userId !== undefined && userId !== null) {
+        data.user = { connect: { id: userId } };
+      }
+
+      return await this.prisma.url.create({ data });
+    } catch (error) {
+      if (error.code === 'P2002') {
+        throw new ConflictException('Shortened URL already exists.');
+      }
+
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: 'Internal server error while creating shortened URL',
+          error: error.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
-
-    return this.prisma.url.create({ data });
   }
 }

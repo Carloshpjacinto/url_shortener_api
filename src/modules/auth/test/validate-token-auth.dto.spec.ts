@@ -21,7 +21,6 @@ describe('ValidateTokenDTO', () => {
 
   it('deve falhar se valid não for booleano', async () => {
     const dto = new ValidateTokenDTO();
-    // @ts-expect-error test invalid type
     dto.valid = 'true';
 
     const errors = await validate(dto);

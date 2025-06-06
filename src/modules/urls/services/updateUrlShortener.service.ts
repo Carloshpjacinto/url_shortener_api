@@ -1,5 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { PrismaService } from 'src/modules/prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { FindUrlByUrlShortService } from './findUrlByUrlShort.service';
 
 @Injectable()
@@ -10,42 +19,58 @@ export class UpdateUrlShortenerService {
   ) {}
 
   async execute(oldUrl: string, newUrl: string, userId: number) {
-    const url = await this.findUrlByUrlShortService.execute(oldUrl);
+    try {
+      const url = await this.findUrlByUrlShortService.execute(oldUrl);
 
-    if (!url) {
-      throw new Error('URL not found.');
-    }
+      if (!url) {
+        throw new NotFoundException('URL not found.');
+      }
 
-    if (url.active != true) {
-      throw new Error('URL deleted.');
-    }
+      if (url.active !== true) {
+        throw new BadRequestException('URL deleted.');
+      }
 
-    if (url.userId != userId) {
-      throw new Error('You do not have permission to delete this URL.');
-    }
+      if (url.userId !== userId) {
+        throw new ForbiddenException(
+          'You do not have permission to edit this URL.',
+        );
+      }
 
-    const regex = /^http:\/\/localhost:3000\/shortened\/([a-zA-Z0-9_-]+)$/;
+      const regex = /^http:\/\/localhost:3000\/shortened\/([a-zA-Z0-9_-]+)$/;
+      const match = newUrl.match(regex);
 
-    const match = newUrl.match(regex);
+      if (!match) {
+        throw new BadRequestException(
+          'Invalid URL format. Use: http://localhost:3000/shortened/{code}',
+        );
+      }
 
-    if (!match) {
-      throw new Error(
-        'Invalid URL format. Use: http://localhost:3000/shortened/{code}',
+      const code = match[1];
+
+      if (this.isRepeating(code) || code.length !== 6) {
+        throw new BadRequestException(
+          'Invalid code: it cannot contain repeated characters or repetitive patterns, nor be shorter than 6 characters.',
+        );
+      }
+
+      return await this.prisma.url.update({
+        where: { url_shortened: oldUrl },
+        data: { url_shortened: newUrl },
+      });
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: 'Internal server error while updating the shortened URL',
+          error: error.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-
-    const code = match[1];
-
-    if (this.isRepeating(code) || code.length !== 6) {
-      throw new Error(
-        'Invalid code: it cannot contain repeated characters or repetitive patterns, nor be shorter than 6 characters.',
-      );
-    }
-
-    return await this.prisma.url.update({
-      where: { url_shortened: oldUrl },
-      data: { url_shortened: newUrl },
-    });
   }
 
   private isRepeating(code: string): boolean {

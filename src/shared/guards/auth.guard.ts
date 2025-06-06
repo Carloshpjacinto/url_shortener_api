@@ -1,8 +1,12 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ValidateJwtToken } from 'src/modules/auth/tools/validateToken.tool';
 import { FindUserByIdService } from 'src/modules/users/services/findUserById.service';
 
@@ -29,13 +33,17 @@ export class AuthGuard implements CanActivate {
           );
           if (user) {
             request.user = user;
+            return true;
           }
         }
+        throw new UnauthorizedException('Invalid token or user not found.');
       } catch (error) {
-        throw new Error('Invalid token.');
+        if (error instanceof UnauthorizedException) {
+          throw error;
+        }
+        throw new UnauthorizedException('Invalid token.');
       }
     }
-
-    return true;
+    throw new UnauthorizedException('Authorization token not found.');
   }
 }

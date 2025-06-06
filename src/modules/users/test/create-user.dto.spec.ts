@@ -17,7 +17,6 @@ describe('CreateUserDTO', () => {
   it('deve falhar se faltar algum campo', async () => {
     const dto = plainToInstance(CreateUserDTO, {
       email: 'carlos@example.com',
-      // falta name e password
     });
 
     const errors = await validate(dto);
