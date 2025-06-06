@@ -6,6 +6,7 @@ import {
   Get,
   Delete,
   Query,
+  Patch,
 } from '@nestjs/common';
 import { LoginAuthUserService } from '../services/loginAuthUser.service';
 import { LoginAuthUserDto } from '../dto/login-auth-user.dto';
@@ -19,6 +20,7 @@ import { CreateUrlShortenerService } from 'src/modules/urls/services/createUrlSh
 import { RedirectUrlAuthService } from '../services/redirectUrlAuth.service';
 import { DeleteUrlShortenerService } from 'src/modules/urls/services/deleteUrlShortener.service';
 import { FindAllUrlShortenerService } from 'src/modules/urls/services/findAllUrlShortener.service';
+import { UpdateUrlShortenerService } from 'src/modules/urls/services/updateUrlShortener.service';
 
 @Controller('auth')
 export class AuthController {
@@ -30,6 +32,7 @@ export class AuthController {
     private readonly redirectUrlAuthService: RedirectUrlAuthService,
     private readonly deleteUrlShortenerService: DeleteUrlShortenerService,
     private readonly findAllUrlShortenerService: FindAllUrlShortenerService,
+    private readonly updateUrlShortenerService: UpdateUrlShortenerService,
   ) {}
 
   @Post('register')
@@ -94,5 +97,18 @@ export class AuthController {
       Number(page),
       Number(limit),
     );
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch('url')
+  updateUrl(
+    @Body('oldUrl') oldUrl: string,
+    @Body('newUrl') newUrl: string,
+    @UserRequest('id') userId: number,
+  ) {
+    if (!userId) {
+      throw new Error('Você precisa estar autenticado para atualizar essa URL');
+    }
+    return this.updateUrlShortenerService.execute(oldUrl, newUrl, userId);
   }
 }
