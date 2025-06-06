@@ -19,7 +19,7 @@ export class CreateUserService {
 
   async execute(body: CreateUserDTO): Promise<User> {
     try {
-      await hashPassword(body.password);
+      body.password = await hashPassword(body.password);
 
       return await this.prisma.user.create({
         data: body,
