@@ -7,6 +7,7 @@ import { UpdateClickCounterService } from './services/updateClickCounter.service
 import { DeleteUrlShortenerService } from './services/deleteUrlShortener.service';
 import { UsersModule } from '../users/users.module';
 import { FindAllUrlShortenerService } from './services/findAllUrlShortener.service';
+import { UpdateUrlShortenerService } from './services/updateUrlShortener.service';
 
 @Module({
   imports: [PrismaModule, forwardRef(() => UsersModule)],
@@ -17,6 +18,7 @@ import { FindAllUrlShortenerService } from './services/findAllUrlShortener.servi
     UpdateClickCounterService,
     DeleteUrlShortenerService,
     FindAllUrlShortenerService,
+    UpdateUrlShortenerService,
   ],
   exports: [
     CreateUrlShortenerService,
@@ -25,6 +27,7 @@ import { FindAllUrlShortenerService } from './services/findAllUrlShortener.servi
     UpdateClickCounterService,
     DeleteUrlShortenerService,
     FindAllUrlShortenerService,
+    UpdateUrlShortenerService,
   ],
 })
 export class UrlsModule {}
