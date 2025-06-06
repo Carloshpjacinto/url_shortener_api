@@ -7,7 +7,7 @@ export class FindUrlByUrlShortService {
 
   async execute(urlShortener: string) {
     return await this.prisma.url.findUnique({
-      where: { url_shortened: urlShortener },
+      where: { url_shortened: urlShortener, active: true },
     });
   }
 }

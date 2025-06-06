@@ -147,7 +147,7 @@ export class AuthController {
         },
         newUrl: {
           type: 'string',
-          example: 'http://localhost:3000/shortened/xyz123',
+          example: 'http://localhost:3000/shortened/lkjhgf',
         },
       },
       required: ['oldUrl', 'newUrl'],
