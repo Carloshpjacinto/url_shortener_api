@@ -17,7 +17,7 @@ export class DeleteUrlShortenerService {
     const url = await this.findUrlByUrlShortService.execute(urlShortener);
 
     if (!user || user.id != url?.userId) {
-      throw new Error('Você não tem permissão para exluir essa URL');
+      throw new Error('You do not have permission to delete this URL.');
     }
     return await this.prisma.url.update({
       where: { url_shortened: urlShortener },

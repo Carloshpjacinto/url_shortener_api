@@ -11,7 +11,7 @@ export class ProfileAuthUserService {
     const user = await this.findUserByEmailService.execute(body);
 
     if (!user) {
-      throw new Error('Usuario não encontrado');
+      throw new Error('User not found.');
     }
 
     return {

@@ -21,7 +21,9 @@ import { RedirectUrlAuthService } from '../services/redirectUrlAuth.service';
 import { DeleteUrlShortenerService } from 'src/modules/urls/services/deleteUrlShortener.service';
 import { FindAllUrlShortenerService } from 'src/modules/urls/services/findAllUrlShortener.service';
 import { UpdateUrlShortenerService } from 'src/modules/urls/services/updateUrlShortener.service';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -35,27 +37,31 @@ export class AuthController {
     private readonly updateUrlShortenerService: UpdateUrlShortenerService,
   ) {}
 
+  @ApiOperation({ summary: 'Register user' })
   @Post('register')
   register(@Body() CreateUser: CreateUserDTO) {
     return this.createUserService.execute(CreateUser);
   }
 
+  @ApiOperation({ summary: 'User login' })
   @Post('login')
   login(@Body() loginAuthUser: LoginAuthUserDto) {
     return this.loginAuthUserService.execute(loginAuthUser);
   }
 
+  @ApiOperation({ summary: 'Get user profile via token' })
+  @ApiBearerAuth('access-token')
   @UseGuards(AuthGuard)
   @Get('profile')
   profile(@UserRequest('email') email: string) {
     if (!email) {
-      throw new Error(
-        'Você precisa estar autenticado para acessar seu perfil.',
-      );
+      throw new Error('You need to be authenticated to access your profile.');
     }
     return this.profileAuthUserService.execute(email);
   }
 
+  @ApiOperation({ summary: 'Shorten URL' })
+  @ApiBearerAuth('access-token')
   @UseGuards(AuthGuard)
   @Post('url')
   urlShortener(
@@ -65,23 +71,52 @@ export class AuthController {
     return this.createUrlShortenerService.execute(createUrlShortenerDto, id);
   }
 
+  @ApiOperation({ summary: 'Redirect to original URL' })
   @Post('redirect')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        urlShortener: {
+          type: 'string',
+          example: 'http://localhost:3000/shortened/xyz123',
+        },
+      },
+      required: ['urlShortener'],
+    },
+  })
   redirect(@Body('urlShortener') urlShortener: string) {
     return this.redirectUrlAuthService.execute(urlShortener);
   }
 
+  @ApiOperation({ summary: 'Delete URL' })
+  @ApiBearerAuth('access-token')
   @UseGuards(AuthGuard)
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        urlShortener: {
+          type: 'string',
+          example: 'http://localhost:3000/shortened/xyz123',
+        },
+      },
+      required: ['urlShortener'],
+    },
+  })
   @Delete('url')
   deleteUrl(
     @Body('urlShortener') urlShortener: string,
     @UserRequest('id') id: number | null,
   ) {
     if (!id) {
-      throw new Error('Você precisa estar autenticado para excluir essa url.');
+      throw new Error('You need to be authenticated to delete this URL.');
     }
     return this.deleteUrlShortenerService.execute(urlShortener, id);
   }
 
+  @ApiOperation({ summary: 'Get all URLs of an authenticated user' })
+  @ApiBearerAuth('access-token')
   @UseGuards(AuthGuard)
   @Get('url')
   findAllUrl(
@@ -90,7 +125,7 @@ export class AuthController {
     @UserRequest('id') id: number | null,
   ) {
     if (!id) {
-      throw new Error('Você precisa estar autenticado para ver as URLS');
+      throw new Error('You need to be authenticated to view the URLs.');
     }
     return this.findAllUrlShortenerService.execute(
       id,
@@ -99,7 +134,25 @@ export class AuthController {
     );
   }
 
+  @ApiOperation({ summary: 'Update URLs of an authenticated user' })
+  @ApiBearerAuth('access-token')
   @UseGuards(AuthGuard)
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        oldUrl: {
+          type: 'string',
+          example: 'http://localhost:3000/shortened/xyz123',
+        },
+        newUrl: {
+          type: 'string',
+          example: 'http://localhost:3000/shortened/xyz123',
+        },
+      },
+      required: ['oldUrl', 'newUrl'],
+    },
+  })
   @Patch('url')
   updateUrl(
     @Body('oldUrl') oldUrl: string,
@@ -107,7 +160,7 @@ export class AuthController {
     @UserRequest('id') userId: number,
   ) {
     if (!userId) {
-      throw new Error('Você precisa estar autenticado para atualizar essa URL');
+      throw new Error('You need to be authenticated to update this URL.');
     }
     return this.updateUrlShortenerService.execute(oldUrl, newUrl, userId);
   }
