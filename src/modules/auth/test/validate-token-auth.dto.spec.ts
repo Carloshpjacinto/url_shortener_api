@@ -21,6 +21,7 @@ describe('ValidateTokenDTO', () => {
 
   it('deve falhar se valid não for booleano', async () => {
     const dto = new ValidateTokenDTO();
+    // @ts-expect-error: teste de tipo inválido proposital
     dto.valid = 'true';
 
     const errors = await validate(dto);
@@ -39,7 +40,7 @@ describe('ValidateTokenDTO', () => {
   it('deve falhar se message não for string', async () => {
     const dto = new ValidateTokenDTO();
     dto.valid = true;
-    // @ts-expect-error test invalid type
+    // @ts-expect-error: teste de tipo inválido proposital
     dto.message = 123;
 
     const errors = await validate(dto);
