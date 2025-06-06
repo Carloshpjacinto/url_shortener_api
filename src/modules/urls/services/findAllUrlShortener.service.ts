@@ -8,10 +8,12 @@ export class FindAllUrlShortenerService {
   async execute(userId: number, page: number = 1, limit: number = 10) {
     const offSet = (page - 1) * limit;
 
-    const total = await this.prisma.url.count({ where: { userId: userId } });
+    const total = await this.prisma.url.count({
+      where: { userId: userId, active: true },
+    });
 
     const data = await this.prisma.url.findMany({
-      where: { userId: userId },
+      where: { userId: userId, active: true },
       take: limit,
       skip: offSet,
     });
