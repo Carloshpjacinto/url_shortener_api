@@ -19,7 +19,7 @@ export class RedirectUrlAuthService {
     }
 
     if (url.active != true) {
-      throw new Error('Url excluida');
+      throw new Error('URL deleted.');
     }
 
     const counterClick = (url.clickCounter += 1);

@@ -1,5 +1,5 @@
 import { PrismaService } from 'src/modules/prisma/prisma.service';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { hashPassword } from 'src/modules/auth/tools/hashPassword.tool';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { userSelectFields } from 'src/modules/users/utils/userSelectFields';
@@ -26,7 +26,7 @@ export class UpdateUserService {
       where: { id },
     });
 
-    if (!user) throw new NotFoundException('User not found');
+    if (!user) throw new Error('User not found');
 
     return user;
   }

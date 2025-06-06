@@ -13,15 +13,15 @@ export class UpdateUrlShortenerService {
     const url = await this.findUrlByUrlShortService.execute(oldUrl);
 
     if (!url) {
-      throw new Error('Url não encontrada');
+      throw new Error('URL not found.');
     }
 
     if (url.active != true) {
-      throw new Error('Url não disponivel');
+      throw new Error('URL deleted.');
     }
 
     if (url.userId != userId) {
-      throw new Error('Você não tem permissão para excluir essa URL');
+      throw new Error('You do not have permission to delete this URL.');
     }
 
     const regex = /^http:\/\/localhost:3000\/shortened\/([a-zA-Z0-9_-]+)$/;
@@ -30,7 +30,7 @@ export class UpdateUrlShortenerService {
 
     if (!match) {
       throw new Error(
-        'Formato de URL inválido. Use: http://localhost:3000/shortened/{code}',
+        'Invalid URL format. Use: http://localhost:3000/shortened/{code}',
       );
     }
 
@@ -38,7 +38,7 @@ export class UpdateUrlShortenerService {
 
     if (this.isRepeating(code) || code.length !== 6) {
       throw new Error(
-        'Código inválido: não pode conter caracteres repetidos ou padrões repetitivos nem ter menos de 6 caracteres.',
+        'Invalid code: it cannot contain repeated characters or repetitive patterns, nor be shorter than 6 characters.',
       );
     }
 
