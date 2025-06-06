@@ -4,7 +4,7 @@ import { CreateUrlShortenerDto } from '../dto/create-url-shortener.dto';
 describe('CreateUrlShortenerDto', () => {
   it('deve ser válido com uma URL válida', async () => {
     const dto = new CreateUrlShortenerDto();
-    dto.url = 'https://example.com/shortened/abc123'; // URL pública válida
+    dto.url = 'https://example.com/shortened/abc123';
 
     const errors = await validate(dto);
     expect(errors.length).toBe(0);

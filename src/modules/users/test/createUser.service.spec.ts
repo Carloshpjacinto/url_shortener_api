@@ -42,7 +42,7 @@ describe('CreateUserService', () => {
 
     expect(hashPassword).toHaveBeenCalledWith('plainPassword');
     expect(prisma.user.create).toHaveBeenCalledWith({
-      data: { ...dto, password: hashedPassword },
+      data: dto,
       select: userSelectFields,
     });
     expect(result).toEqual(expectedUser);

@@ -91,7 +91,7 @@ describe('UpdateUrlShortenerService', () => {
         'http://localhost:3000/shortened/xyz789',
         1,
       ),
-    ).rejects.toThrow('You do not have permission to delete this URL.');
+    ).rejects.toThrow('You do not have permission to edit this URL.');
   });
 
   it('deve lançar erro se o formato da nova URL for inválido', async () => {

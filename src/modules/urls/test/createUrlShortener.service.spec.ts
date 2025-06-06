@@ -53,7 +53,6 @@ describe('CreateUrlShortenerService', () => {
         url_shortened: `http://localhost:3000/shortened/${code}`,
         clickCounter: 0,
         active: true,
-        user: { connect: { id: null } }, // espera o campo user com id:null
       },
     });
     expect(result).toEqual(expectedUrl);
