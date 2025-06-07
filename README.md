@@ -70,15 +70,21 @@ Get de cima está com páginação, exemplo da Url: http://localhost:3000/auth/u
 
     npm install
 
-### 3. Configurar a variavel de ambiente JWT_SECRET.
+### 3. Rode os seguintes comandos no bash para remover os caracteres de quebra de linha do Windows do arquivo entrypoint.sh localmente:
+
+    sed -i 's/\r$//' entrypoint.sh
+
+    chmod +x entrypoint.sh
+
+### 4. Configurar a variavel de ambiente JWT_SECRET.
 
 #### O arquivo .env.example serve como exemplo das variáveis de ambiente usadas no projeto.
 
-### 4. Execução dos testes com cobertura.
+### 5. Execução dos testes com cobertura.
 
     npm run test:cov
 
-### 5. Execução da aplicação em Docker
+### 6. Execução da aplicação em Docker
 
     npm run dev
 
