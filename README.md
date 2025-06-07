@@ -82,7 +82,7 @@ Get de cima está com páginação, exemplo da Url: http://localhost:3000/auth/u
 
     npm run dev
 
-As migrations são executadas automaticamente após o Docker terminar de subir o banco de dados.
+As migrations são executadas automaticamente após o Docker terminar de subir o banco de dados.<br>
 O Docker está executando o PostgreSQL, PgAdmin e a Aplicação.
 
 ## 🚪 Portas de acesso da aplicação:
