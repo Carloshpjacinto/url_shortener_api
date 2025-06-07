@@ -98,3 +98,10 @@ Port:    5432<br>
 Maintenance database:    url_shortener<br>
 Username:    postgres<br>
 password:    docker
+
+### ⚠️ Possíveis melhorias:
+
+#### 1.Rate limit por IP ou por usuário
+#### 2.Expiração automática das URLs 
+#### 3.Painel de estatísticas com quantidade de acessos 
+#### 4.Integração com Redis para cache de redirecionamentos 
