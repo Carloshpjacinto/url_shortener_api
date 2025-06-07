@@ -12,3 +12,8 @@ npx prisma migrate deploy
 
 echo "Iniciando aplicação Nest.js..."
 npm run start:dev
+
+# Caso, ao rodar a aplicação, o Docker aponte um erro na leitura deste arquivo, execute os seguintes comandos no bash:
+# "sed -i 's/\r$//' entrypoint.sh"
+# "chmod +x entrypoint.sh" 
+# Então rode a aplicação novamente com: npm run dev
