@@ -91,7 +91,7 @@ O Docker está executando o PostgreSQL, PgAdmin e a Aplicação.
 
 ### 2. PgAdmin - http://localhost:3200
 
-Para configurar o PosgreSQL no PgAdmin:<br>
+#### Para configurar o PosgreSQL no PgAdmin:<br>
 Nome: postgres<br>
 Host name/address: postgres<br>
 Port: 5432<br>
