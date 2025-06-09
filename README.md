@@ -1,4 +1,4 @@
-# 🔗 Encurtador de URLs 
+# 🔗 Encurtador de URLs
 
 ### API RESTful para encurtar URLs de usupario autenticados ou não. Construída com NestJS, TypeScript, PostgreSQL, Prisma, Docker e Swagger.
 
@@ -32,12 +32,17 @@
 
 ## 👨‍💻 Principais funcionalidades:
 
- ##### Cadastro de usuário
- ##### Login de usuário
- ##### Autenticação via JWT
- ##### Encurtamento de URLs
- ##### Editar URLs encurtadas
- ##### Deletar URLs encurtadas
+##### Cadastro de usuário
+
+##### Login de usuário
+
+##### Autenticação via JWT
+
+##### Encurtamento de URLs
+
+##### Editar URLs encurtadas
+
+##### Deletar URLs encurtadas
 
 ## </> Principais Endpoints da API:
 
@@ -105,12 +110,13 @@ O Docker está executando o PostgreSQL, PgAdmin e a Aplicação.
 ### 4. Grafana - http://localhost:3001
 
 #### Para configurar o PosgreSQL no PgAdmin:<br>
-Nome:    postgres<br>
-Host name/address:    postgres<br>
-Port:    5432<br>
-Maintenance database:    url_shortener<br>
-Username:    postgres<br>
-password:    docker
+
+Nome: postgres<br>
+Host name/address: postgres<br>
+Port: 5432<br>
+Maintenance database: url_shortener<br>
+Username: postgres<br>
+password: docker
 
 ## 📊 Construção dos dashboards em Grafana
 
@@ -118,7 +124,8 @@ password:    docker
 
 ### Configuração do Painel de Métricas da Aplicação:
 
-#### Usuários Cadastrados: 
+#### Usuários Cadastrados:
+
 Data source: grafana-postgresql-datasource(PostgreSQL)<br>
 Tabela: users<br>
 Operação: COUNT<br>
@@ -126,6 +133,7 @@ Coluna: id<br>
 Clique em "Run query"<br>
 
 #### URLs Ativas:
+
 Data source: grafana-postgresql-datasource(PostgreSQL)<br>
 Tabela: urls<br>
 Operação: COUNT<br>
@@ -134,7 +142,8 @@ Ative o "Filter":<br>
 Clique em "+" e selecione: active == Yes<br>
 Clique em "Run query"<br>
 
-#### URLs Desativadas: 
+#### URLs Desativadas:
+
 Data source: grafana-postgresql-datasource (PostgreSQL)<br>
 Tabela: urls<br>
 Operação: COUNT<br>
@@ -144,26 +153,31 @@ Clique em "+" e selecione: active == No<br>
 Clique em "Run query"<br>
 
 #### CPU (Aplicação e PostgreSQL):
+
 Data source: prometheus<br>
 Métrica: process_cpu_seconds_total<br>
 Clique em "Run query"<br>
 
 #### Memória Física (Aplicação e PostgreSQL):
+
 Data source: prometheus<br>
 Métrica: process_resident_memory_bytes<br>
 Clique em "Run query"<br>
 
 #### Memória Virtual (Aplicação e PostgreSQL):
+
 Data source: prometheus<br>
 Métrica: process_virtual_memory_bytes<br>
 Clique em "Run query"<br>
 
 #### Handles Ativos (Aplicação):
+
 Data source: prometheus<br>
 Métrica: nodejs_active_handles_total<br>
 Clique em "Run query"<br>
 
 #### Picos de Lentidão (Aplicação):
+
 Data source: prometheus<br>
 Métrica: nodejs_eventloop_lag_p99_seconds<br>
 Clique em "Run query"<br>
@@ -171,5 +185,12 @@ Clique em "Run query"<br>
 ### ⚠️ Possíveis melhorias:
 
 #### 1.Rate limit por IP ou por usuário
+
 #### 2.Expiração automática das URLs
+<<<<<<< Updated upstream
+=======
+
+#### 3.Painel de estatísticas com quantidade de acessos
+
+>>>>>>> Stashed changes
 #### 4.Integração com Redis para cache de redirecionamentos

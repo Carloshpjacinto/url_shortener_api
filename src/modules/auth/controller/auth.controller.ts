@@ -7,6 +7,7 @@ import {
   Delete,
   Query,
   Patch,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { LoginAuthUserService } from '../services/loginAuthUser.service';
 import { LoginAuthUserDto } from '../dto/login-auth-user.dto';
@@ -55,7 +56,9 @@ export class AuthController {
   @Get('profile')
   profile(@UserRequest('email') email: string) {
     if (!email) {
-      throw new Error('You need to be authenticated to access your profile.');
+      throw new UnauthorizedException(
+        'You need to be authenticated to access your profile.',
+      );
     }
     return this.profileAuthUserService.execute(email);
   }
@@ -110,7 +113,9 @@ export class AuthController {
     @UserRequest('id') id: number | null,
   ) {
     if (!id) {
-      throw new Error('You need to be authenticated to delete this URL.');
+      throw new UnauthorizedException(
+        'You need to be authenticated to delete this URL.',
+      );
     }
     return this.deleteUrlShortenerService.execute(urlShortener, id);
   }
@@ -125,7 +130,9 @@ export class AuthController {
     @UserRequest('id') id: number | null,
   ) {
     if (!id) {
-      throw new Error('You need to be authenticated to view the URLs.');
+      throw new UnauthorizedException(
+        'You need to be authenticated to view the URLs.',
+      );
     }
     return this.findAllUrlShortenerService.execute(
       id,
@@ -160,7 +167,9 @@ export class AuthController {
     @UserRequest('id') userId: number,
   ) {
     if (!userId) {
-      throw new Error('You need to be authenticated to update this URL.');
+      throw new UnauthorizedException(
+        'You need to be authenticated to update this URL.',
+      );
     }
     return this.updateUrlShortenerService.execute(oldUrl, newUrl, userId);
   }
