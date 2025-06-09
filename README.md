@@ -187,10 +187,5 @@ Clique em "Run query"<br>
 #### 1.Rate limit por IP ou por usuário
 
 #### 2.Expiração automática das URLs
-<<<<<<< Updated upstream
-=======
 
-#### 3.Painel de estatísticas com quantidade de acessos
-
->>>>>>> Stashed changes
-#### 4.Integração com Redis para cache de redirecionamentos
+#### 3.Integração com Redis para cache de redirecionamentos
