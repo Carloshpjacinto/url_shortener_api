@@ -111,7 +111,7 @@ Maintenance database:    url_shortener<br>
 Username:    postgres<br>
 password:    docker
 
-## 📊 Construção dos dashboard em Grafana
+## 📊 Construção dos dashboards em Grafana
 
 ### O painel com os dashboards pode ser importado por meio do arquivo JSON presente no projeto: dashboard.grafana.json
 
