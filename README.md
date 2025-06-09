@@ -119,7 +119,28 @@ Maintenance database: url_shortener<br>
 Username: postgres<br>
 password: docker
 
-## 📊 Construção dos dashboards em Grafana
+## 📊 Construção dos dashboards em Grafana:
+
+### Configurar conexões no Grafana com os Data Sources (Aplicação e PostgreSQL):
+
+#### Acesse o menu Connections > Data sources.
+
+#### Aplicação (Nest.js com Prometheus):
+
+Clique em Add data source e selecione Prometheus.<br>
+No campo Prometheus server URL, insira: http://host.docker.internal:9090<br>
+Clique em Save & Test para validar a conexão.<br>
+
+#### Banco de Dados (PostgreSQL):
+
+Clique em Add data source e selecione PostgreSQL.<br>
+Preencha os seguintes campos:<br>
+Host: postgres<br>
+Database: url_shortener<br>
+User: postgres<br>
+Password: docker<br>
+TLS/SSL Mode: disable<br>
+Clique em Save & Test para validar a conexão.
 
 ### O painel com os dashboards pode ser importado por meio do arquivo JSON presente no projeto: dashboard.grafana.json
 
