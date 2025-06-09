@@ -17,6 +17,8 @@
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original-wordmark.svg" height="45" style="margin-right: 50px;"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jest/jest-plain.svg" width="45" height="45"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/swagger/swagger-original-wordmark.svg" height="45" style="margin-right: 50px;"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/prometheus/prometheus-plain-wordmark.svg" height="45" style="margin-right: 50px;"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/grafana/grafana-original-wordmark.svg" height="45" style="margin-right: 50px;"/>
 </div>
 
 ---
@@ -97,6 +99,10 @@ O Docker está executando o PostgreSQL, PgAdmin e a Aplicação.
 
 ### 2. PgAdmin - http://localhost:3200
 
+### 3. Prometheus - http://localhost:9090/targets
+
+### 4. Grafana - http://localhost:3001
+
 #### Para configurar o PosgreSQL no PgAdmin:<br>
 Nome:    postgres<br>
 Host name/address:    postgres<br>
@@ -105,9 +111,65 @@ Maintenance database:    url_shortener<br>
 Username:    postgres<br>
 password:    docker
 
+## 📊 Construção dos dashboard em Grafana
+
+### O painel com os dashboards pode ser importado por meio do arquivo JSON presente no projeto: dashboard.grafana.json
+
+### Configuração do Painel de Métricas da Aplicação:
+
+#### Usuários Cadastrados: 
+Data source: grafana-postgresql-datasource(PostgreSQL)<br>
+Tabela: users<br>
+Operação: COUNT<br>
+Coluna: id<br>
+Clique em "Run query"<br>
+
+#### URLs Ativas:
+Data source: grafana-postgresql-datasource(PostgreSQL)<br>
+Tabela: urls<br>
+Operação: COUNT<br>
+Coluna: active<br>
+Ative o "Filter":<br>
+Clique em "+" e selecione: active == Yes<br>
+Clique em "Run query"<br>
+
+#### URLs Desativadas: 
+Data source: grafana-postgresql-datasource (PostgreSQL)<br>
+Tabela: urls<br>
+Operação: COUNT<br>
+Coluna: active<br>
+Ative o "Filter":<br>
+Clique em "+" e selecione: active == No<br>
+Clique em "Run query"<br>
+
+#### CPU (Aplicação e PostgreSQL):
+Data source: prometheus<br>
+Métrica: process_cpu_seconds_total<br>
+Clique em "Run query"<br>
+
+#### Memória Física (Aplicação e PostgreSQL):
+Data source: prometheus<br>
+Métrica: process_resident_memory_bytes<br>
+Clique em "Run query"<br>
+
+#### Memória Virtual (Aplicação e PostgreSQL):
+Data source: prometheus<br>
+Métrica: process_virtual_memory_bytes<br>
+Clique em "Run query"<br>
+
+#### Handles Ativos (Aplicação):
+Data source: prometheus<br>
+Métrica: nodejs_active_handles_total<br>
+Clique em "Run query"<br>
+
+#### Picos de Lentidão (Aplicação):
+Data source: prometheus<br>
+Métrica: nodejs_eventloop_lag_p99_seconds<br>
+Clique em "Run query"<br>
+
 ### ⚠️ Possíveis melhorias:
 
 #### 1.Rate limit por IP ou por usuário
-#### 2.Expiração automática das URLs 
+#### 2.Expiração automática das URLs
 #### 3.Painel de estatísticas com quantidade de acessos 
 #### 4.Integração com Redis para cache de redirecionamentos 
